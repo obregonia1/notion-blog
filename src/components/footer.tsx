@@ -5,7 +5,7 @@ export default function Footer() {
     <>
       <footer>
         <span>
-          POWERED BY
+          POWERED BY{' '}
           <ExtLink href="https://github.com/ijjk/notion-blog">
             Notion Blog
           </ExtLink>
