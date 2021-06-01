@@ -16,7 +16,7 @@ export default function Index() {
         />
         <h1>Code Rules Everything Around Me</h1>
 
-        <p>
+        <p className={sharedStyles.layout}>
           <a href="https://bootcamp.fjord.jp/">フィヨルドブートキャンプ</a>
           でプログラミング勉強中
         </p>
