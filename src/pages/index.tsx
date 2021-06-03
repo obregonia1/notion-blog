@@ -10,10 +10,16 @@ export default function Index() {
       <div className={sharedStyles.layout}>
         <h1>Code Rules Everything Around Me</h1>
 
-        <p className={sharedStyles.layout}>
-          <a href="https://bootcamp.fjord.jp/">フィヨルドブートキャンプ</a>
-          でプログラミング勉強中
-        </p>
+        <ul className={sharedStyles.layout}>
+          <li>
+            <a href="https://bootcamp.fjord.jp/">フィヨルドブートキャンプ</a>
+            でプログラミング勉強中
+          </li>
+          <li>🎧HIPHOP</li>
+          <li>💪筋トレ</li>
+          <li>📀スクラッチ</li>
+          <li>👖Gangsterville</li>
+        </ul>
       </div>
     </>
   )
