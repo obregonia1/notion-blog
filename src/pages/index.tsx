@@ -13,12 +13,12 @@ export default function Index() {
         <ul className={sharedStyles.layout}>
           <li>
             <a href="https://bootcamp.fjord.jp/">フィヨルドブートキャンプ</a>
-            でプログラミング勉強中
           </li>
+          <li>ジョジョの奇妙な冒険</li>
+          <li>👖Gangsterville</li>
+          <li>📀スクラッチ</li>
           <li>🎧HIPHOP</li>
           <li>💪筋トレ</li>
-          <li>📀スクラッチ</li>
-          <li>👖Gangsterville</li>
         </ul>
       </div>
     </>
