@@ -158,6 +158,7 @@ const RenderPost = ({ post, redirect, preview }) => {
         {post.Date && (
           <div className="posted">Posted: {getDateStr(post.Date)}</div>
         )}
+        <span>{post.Tag}</span>
 
         <hr />
 
