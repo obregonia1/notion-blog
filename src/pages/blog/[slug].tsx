@@ -11,7 +11,12 @@ import getPageData from '../../lib/notion/getPageData'
 import React, { CSSProperties, useEffect } from 'react'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
-import { getBlogLink, getDateStr, getTagLink } from '../../lib/blog-helpers'
+import {
+  getBlogLink,
+  getDateStr,
+  getTagLink,
+  postIsPublished,
+} from '../../lib/blog-helpers'
 
 // Get the data for each blog post
 export async function getStaticProps({ params: { slug }, preview }) {
@@ -56,6 +61,12 @@ export async function getStaticProps({ params: { slug }, preview }) {
     }
   }
 
+  const tags: string[] = Object.keys(postsTable)
+    .filter((slug) => postIsPublished(postsTable[slug]))
+    .map((slug) => postsTable[slug].Tags)
+    .flat()
+    .filter((tag, index, self) => self.indexOf(tag) === index)
+
   const { users } = await getNotionUsers(post.Authors || [])
   post.Authors = Object.keys(users).map((id) => users[id].full_name)
 
@@ -63,6 +74,7 @@ export async function getStaticProps({ params: { slug }, preview }) {
     props: {
       post,
       preview: preview || false,
+      tags,
     },
     revalidate: 10,
   }
@@ -83,7 +95,7 @@ export async function getStaticPaths() {
 
 const listTypes = new Set(['bulleted_list', 'numbered_list'])
 
-const RenderPost = ({ post, redirect, preview }) => {
+const RenderPost = ({ post, tags = [], redirect, preview }) => {
   const router = useRouter()
 
   let listTagName: string | null = null
@@ -152,9 +164,9 @@ const RenderPost = ({ post, redirect, preview }) => {
       )}
       <div className={blogStyles.post}>
         <h1>{post.Page || ''}</h1>
-        {post.Authors.length > 0 && (
-          <div className="authors">By: {post.Authors.join(' ')}</div>
-        )}
+        {/*{post.Authors.length > 0 && (*/}
+        {/*  <div className="authors">By: {post.Authors.join(' ')}</div>*/}
+        {/*)}*/}
         {post.Date && (
           <div className="posted">Posted: {getDateStr(post.Date)}</div>
         )}
@@ -488,6 +500,25 @@ const RenderPost = ({ post, redirect, preview }) => {
           }
           return toRender
         })}
+      </div>
+      <div className={blogStyles.tagIndex}>
+        <h3>タグ</h3>
+        {tags.length === 0 && (
+          <div className={blogStyles.noTags}>There are no tags yet</div>
+        )}
+        {tags.length > 0 && (
+          <ul>
+            {tags.map((tag) => {
+              return (
+                <li key={tag}>
+                  <Link href="/blog/tag/[tag]" as={getTagLink(tag)} passHref>
+                    <a>{tag}</a>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     </>
   )
