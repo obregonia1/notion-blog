@@ -20,7 +20,7 @@ export async function getStaticProps({ params: { tag } }) {
       props: {
         redirect: '/blog',
       },
-      unstable_revalidate: 30,
+      revalidate: 30,
     }
   }
 
@@ -30,7 +30,7 @@ export async function getStaticProps({ params: { tag } }) {
       tags,
       tag,
     },
-    unstable_revalidate: 10,
+    revalidate: 10,
   }
 }
 
@@ -96,18 +96,20 @@ export default ({ tag, posts = [], tags = [], redirect }) => {
                   </Link>
                 </div>
               </h3>
-              {post.Tags &&
-                post.Tags.length > 0 &&
-                post.Tags.map((tag) => (
-                  <Link
-                    href="/blog/tag/[tag]"
-                    as={getTagLink(tag)}
-                    key={`${post.Slug}-${tag}`}
-                    passHref
-                  >
-                    <a className={blogStyles.tag}>🔖{tag}</a>
-                  </Link>
-                ))}
+              <div className={blogStyles.tagContainer}>
+                {post.Tags &&
+                  post.Tags.length > 0 &&
+                  post.Tags.map((tag) => (
+                    <Link
+                      href="/blog/tag/[tag]"
+                      as={getTagLink(tag)}
+                      key={`${post.Slug}-${tag}`}
+                      passHref
+                    >
+                      <a className={blogStyles.tag}>🔖{tag}</a>
+                    </Link>
+                  ))}
+              </div>
               <p>{post.Excerpt}</p>
               <Link href="/blog/[slug]" as={getBlogLink(post.Slug)} passHref>
                 <a className={blogStyles.expandButton}>続きを読む</a>
