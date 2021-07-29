@@ -4,64 +4,27 @@ import Header from '../../components/header'
 import blogStyles from '../../styles/blog.module.css'
 import sharedStyles from '../../styles/shared.module.css'
 
-import {
-  getBlogLink,
-  getDateStr,
-  postIsPublished,
-} from '../../lib/blog-helpers'
+import { getBlogLink, getTagLink } from '../../lib/blog-helpers'
 import { textBlock } from '../../lib/notion/renderers'
-import getNotionUsers from '../../lib/notion/getNotionUsers'
-import getBlogIndex from '../../lib/notion/getBlogIndex'
+import { getPosts, getAllTags } from '../../lib/notion/client'
 
-export async function getStaticProps({ preview }) {
-  const postsTable = await getBlogIndex()
-
-  const authorsToGet: Set<string> = new Set()
-  const posts: any[] = Object.keys(postsTable)
-    .map((slug) => {
-      const post = postsTable[slug]
-      // remove draft posts in production
-      if (!preview && !postIsPublished(post)) {
-        return null
-      }
-      post.Authors = post.Authors || []
-      for (const author of post.Authors) {
-        authorsToGet.add(author)
-      }
-      return post
-    })
-    .filter(Boolean)
-
-  const { users } = await getNotionUsers([...authorsToGet])
-
-  posts.map((post) => {
-    post.Authors = post.Authors.map((id) => users[id].full_name)
-  })
+export async function getStaticProps() {
+  const posts = await getPosts()
+  const tags = await getAllTags()
 
   return {
     props: {
-      preview: preview || false,
       posts,
+      tags,
     },
     revalidate: 10,
   }
 }
 
-const Index = ({ posts = [], preview }) => {
+const Index = ({ posts = [], tags = [] }) => {
   return (
     <>
       <Header titlePre="Blog" />
-      {preview && (
-        <div className={blogStyles.previewAlertContainer}>
-          <div className={blogStyles.previewAlert}>
-            <b>Note:</b>
-            {` `}Viewing in preview mode{' '}
-            <Link href={`/api/clear-preview`}>
-              <button className={blogStyles.escapePreview}>Exit Preview</button>
-            </Link>
-          </div>
-        </div>
-      )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
         <h1>Code Rules Everything Around Me</h1>
         {posts.length === 0 && (
@@ -70,32 +33,54 @@ const Index = ({ posts = [], preview }) => {
         {posts.map((post) => {
           return (
             <div className={blogStyles.postPreview} key={post.Slug}>
+              {post.Date && (
+                <div className="posted">📅&nbsp;&nbsp;{post.Date}</div>
+              )}
               <h3>
                 <span className={blogStyles.titleContainer}>
-                  {!post.Published && (
-                    <span className={blogStyles.draftBadge}>Draft</span>
-                  )}
                   <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
-                    <a>{post.Page}</a>
+                    <a>{post.Title}</a>
                   </Link>
                 </span>
               </h3>
-              {/*{post.Authors.length > 0 && (*/}
-              {/*  <div className="authors">By: {post.Authors.join(' ')}</div>*/}
-              {/*)}*/}
-              {post.Date && (
-                <div className="posted">Posted: {getDateStr(post.Date)}</div>
-              )}
-              <p>
-                {(!post.preview || post.preview.length === 0) &&
-                  'No preview available'}
-                {(post.preview || []).map((block, idx) =>
-                  textBlock(block, true, `${post.Slug}${idx}`)
-                )}
-              </p>
+              {post.Tags &&
+                post.Tags.length > 0 &&
+                post.Tags.map((tag) => (
+                  <Link
+                    href="/blog/tag/[tag]"
+                    as={getTagLink(tag)}
+                    key={`${post.Slug}-${tag}`}
+                    passHref
+                  >
+                    <a className={blogStyles.tag}>🔖{tag}</a>
+                  </Link>
+                ))}
+              <p>{post.Excerpt}</p>
+              <Link href="/blog/[slug]" as={getBlogLink(post.Slug)} passHref>
+                <a className={blogStyles.expandButton}>続きを読む</a>
+              </Link>
             </div>
           )
         })}
+      </div>
+      <div className={blogStyles.tagIndex}>
+        <h3>タグ</h3>
+        {tags.length === 0 && (
+          <div className={blogStyles.noTags}>There are no tags yet</div>
+        )}
+        {tags.length > 0 && (
+          <ul>
+            {tags.map((tag) => {
+              return (
+                <li key={tag}>
+                  <Link href="/blog/tag/[tag]" as={getTagLink(tag)} passHref>
+                    <a>{tag}</a>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     </>
   )

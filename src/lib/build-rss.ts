@@ -2,12 +2,13 @@ import { resolve } from 'path'
 import { writeFile } from './fs-helpers'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { textBlock } from './notion/renderers'
-import getBlogIndex from './notion/getBlogIndex'
-import getNotionUsers from './notion/getNotionUsers'
-import { postIsPublished, getBlogLink } from './blog-helpers'
 import { loadEnvConfig } from '@next/env'
 import serverConstants from './notion/server-constants'
+
+import { getBlogLink } from './blog-helpers'
+import { getAllPosts } from './notion/client'
+import { textBlock } from './notion/renderers'
+import { getPosts, getAllTags } from './notion/client'
 
 // must use weird syntax to bypass auto replacing of NODE_ENV
 process.env['NODE' + '_ENV'] = 'production'
@@ -32,9 +33,9 @@ function decode(string) {
 function mapToEntry(post) {
   return `
     <entry>
-      <id>${post.link}</id>
+      <id>${getBlogLink(post.Slug)}</id>
       <title>${decode(post.title)}</title>
-      <link href="${post.link}"/>
+      <link href="${getBlogLink(post.Slug)}"/>
       <updated>${new Date(post.date).toJSON()}</updated>
       <content type="xhtml">
         <div xmlns="http://www.w3.org/1999/xhtml">
@@ -74,39 +75,17 @@ function createRSS(blogPosts = []) {
 
 async function main() {
   await loadEnvConfig(process.cwd())
-  serverConstants.NOTION_TOKEN = process.env.NOTION_TOKEN
-  serverConstants.BLOG_INDEX_ID = serverConstants.normalizeId(
-    process.env.BLOG_INDEX_ID
-  )
+  // serverConstants.NOTION_TOKEN = process.env.NOTION_TOKEN
+  // serverConstants.BLOG_INDEX_ID = serverConstants.normalizeId(
+  //   process.env.BLOG_INDEX_ID
+  // )
+  serverConstants.NOTION_API_SECRET = process.env.NOTION_API_SECRET
+  serverConstants.DATABASE_ID = process.env.DATABASE_ID
 
-  const postsTable = await getBlogIndex(true)
-  const neededAuthors = new Set<string>()
-
-  const blogPosts = Object.keys(postsTable)
-    .map((slug) => {
-      const post = postsTable[slug]
-      if (!postIsPublished(post)) return
-
-      post.authors = post.Authors || []
-
-      for (const author of post.authors) {
-        neededAuthors.add(author)
-      }
-      return post
-    })
-    .filter(Boolean)
-
-  const { users } = await getNotionUsers([...neededAuthors])
-
-  blogPosts.forEach((post) => {
-    post.authors = post.authors.map((id) => users[id])
-    post.link = getBlogLink(post.Slug)
-    post.title = post.Page
-    post.date = post.Date
-  })
+  const posts = await getAllPosts()
 
   const outputPath = './public/atom'
-  await writeFile(resolve(outputPath), createRSS(blogPosts))
+  await writeFile(resolve(outputPath), createRSS(posts))
   console.log(`Atom feed file generated at \`${outputPath}\``)
 }
 

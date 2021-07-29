@@ -15,6 +15,7 @@ export default function Index() {
             <a href="https://bootcamp.fjord.jp/">フィヨルドブートキャンプ</a>
           </li>
           <li>ジョジョの奇妙な冒険</li>
+          <li>🛹スケートボード</li>
           <li>👖Gangsterville</li>
           <li>📀スクラッチ</li>
           <li>🎧HIPHOP</li>
