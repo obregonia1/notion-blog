@@ -6,7 +6,6 @@ import Heading from '../../components/heading'
 import components from '../../components/dynamic'
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import blogStyles from '../../styles/blog.module.css'
-import getPageData from '../../lib/notion/getPageData'
 import React, { CSSProperties, useEffect } from 'react'
 
 import { getBlogLink, getTagLink } from '../../lib/blog-helpers'
@@ -16,6 +15,7 @@ import {
   getAllPosts,
   getPostBySlug,
   getAllTags,
+  getAllBlocksByPageId,
 } from '../../lib/notion/client'
 
 // Get the data for each blog post
@@ -32,15 +32,15 @@ export async function getStaticProps({ params: { slug } }) {
     }
   }
 
-  const postData = await getPageData(post.PageId)
-  post['content'] = postData.blocks
-
+  const blocks = await getAllBlocksByPageId(post.PageId)
   const recentPosts = await getPosts(5)
   const tags = await getAllTags()
 
   return {
     props: {
       post,
+      blocks,
+      recentPosts,
       tags,
     },
     revalidate: 10,
