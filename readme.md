@@ -29,13 +29,6 @@ Note: if redeploying with `vc` locally and you haven't made any changes to the a
 
 **Note**: this is auto run if a table isn't detected the first time visiting `/blog`
 
-### Using the Pre-Configured Script
-
-1. Create a blank page in Notion
-2. Clone this repo `git clone https://github.com/ijjk/notion-blog.git`
-3. Install dependencies `cd notion-blog && yarn`
-4. Run script to create table `NOTION_TOKEN='token' BLOG_INDEX_ID='new-page-id' node scripts/create-table.js` See [here](#getting-blog-index-and-token) for finding the id for the new page
-
 ### Manually Creating the Table
 
 1. Create a blank page in Notion
