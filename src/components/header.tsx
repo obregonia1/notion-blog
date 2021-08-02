@@ -9,7 +9,7 @@ const navItems: { label: string; page?: string; link?: string }[] = [
   { label: 'Blog', page: '/blog' },
 ]
 
-const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
+const ogImageUrl = 'https://www.obregonia1.com/og-image.png'
 
 const Header = ({ titlePre = '' }) => {
   const { pathname } = useRouter()
