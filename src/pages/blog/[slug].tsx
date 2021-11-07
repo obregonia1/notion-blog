@@ -100,7 +100,7 @@ const RenderPost = ({ post, blocks = [], tags = [], redirect }) => {
 
   return (
     <>
-      <Header titlePre={post.title} />
+      <Header titlePre={post.Title} />
       <div className={blogStyles.post}>
         {post.Date && <div className="posted">📅&nbsp;&nbsp;{post.Date}</div>}
         <h1>{post.Title || ''}</h1>
