@@ -26,6 +26,7 @@ const Header = ({ titlePre = '' }) => {
         <meta name="twitter:site" content="@obregonia1" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={ogImageUrl} />
+        <meta property="og:description" content={titlePre} />
       </Head>
       <ul>
         {navItems.map(({ label, page, link }) => (
