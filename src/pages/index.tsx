@@ -3,7 +3,11 @@ import ExtLink from '../components/ext-link'
 import Features from '../components/features'
 import sharedStyles from '../styles/shared.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons'
+import {
+  faTwitter,
+  faGithub,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons'
 
 export default function Index() {
   return (
@@ -57,6 +61,12 @@ export default function Index() {
             className={sharedStyles.layout}
           >
             <FontAwesomeIcon icon={faGithub} />
+          </a>
+          <a
+            href="https://www.youtube.com/channel/UCGGFmBkidegnCP7q-FhfbAw"
+            className={sharedStyles.layout}
+          >
+            <FontAwesomeIcon icon={faYoutube} />
           </a>
         </div>
       </div>
