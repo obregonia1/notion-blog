@@ -203,6 +203,15 @@ const RenderPost = ({ post, blocks = [], tags = [], redirect }) => {
             case 'heading_3':
               renderHeading('h3')
               break
+            case 'code':
+              toRender.push(
+                <components.Code key={block.Id} language={block.Language || ''}>
+                  {block.Code.Text.map(
+                    (richText) => richText.Text.Content
+                  ).join('')}
+                </components.Code>
+              )
+              break
             default:
               if (
                 process.env.NODE_ENV !== 'production' &&
