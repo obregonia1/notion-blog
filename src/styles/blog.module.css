@@ -273,3 +273,11 @@ div.postPreview {
   list-style: none;
   padding: 0;
 }
+
+.post blockquote {
+  margin: 0;
+  padding: 0.3em 0.9em;
+  border-left: 3px solid #333;
+  font-size: 0.8em;
+  line-height: 1.8em;
+}

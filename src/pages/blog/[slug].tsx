@@ -7,6 +7,7 @@ import components from '../../components/dynamic'
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import blogStyles from '../../styles/blog.module.css'
 import React, { CSSProperties, useEffect } from 'react'
+import Image from 'next/image'
 
 import { getBlogLink, getTagLink } from '../../lib/blog-helpers'
 import { textBlock } from '../../lib/notion/renderers'
@@ -202,6 +203,41 @@ const RenderPost = ({ post, blocks = [], tags = [], redirect }) => {
               break
             case 'heading_3':
               renderHeading('h3')
+              break
+            case 'code':
+              toRender.push(
+                <components.Code key={block.Id} language={block.Language || ''}>
+                  {block.Code.Text.map(
+                    (richText) => richText.Text.Content
+                  ).join('')}
+                </components.Code>
+              )
+              break
+            case 'quote':
+              toRender.push(
+                React.createElement(
+                  components.blockquote,
+                  { key: block.Id },
+                  block.Quote.Text.map(
+                    (richText) => richText.Text.Content
+                  ).join('')
+                )
+              )
+              break
+            case 'image':
+              toRender.push(
+                <img src={block.Image.File.Url} alt="image in the content" />
+              )
+              if (
+                block.Image.Caption.length > 0 &&
+                block.Image.Caption[0].Text.Content
+              ) {
+                toRender.push(
+                  <div className={blogStyles.caption}>
+                    {block.Image.Caption[0].Text.Content}
+                  </div>
+                )
+              }
               break
             default:
               if (
