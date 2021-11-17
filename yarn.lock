@@ -145,10 +145,10 @@
   resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-10.2.0.tgz#55953b697769c6647f371bc6bcd865a24e1a22e9"
   integrity sha512-3I31K9B4hEQRl7yQ44Umyz+szHtuMJrNdwsgJGhoEnUCXSBRHp5wv5Zv8eDa2NewSbe53b2C0oOpivrzmdBakw==
 
-"@notionhq/client@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@notionhq/client/-/client-0.2.3.tgz#dba210cd4aeb21e15e24decb1b5709f09083fbcd"
-  integrity sha512-UsJUZT02zOF4PxT+1RcAmZcXKBbodoGz78Qi+RSxlGKPlbje0SPn/3yhkTfvQxcN/tF7PiBIrVSihGSAT+SXxg==
+"@notionhq/client@^0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@notionhq/client/-/client-0.4.6.tgz#ca4d3de216e711d03719605066b8b32011a559e3"
+  integrity sha512-P6JLxESipVTilZl/SCnd4TKvfa6O3r4NtUcqNtcZa6tLcQjI2kM8bBLPeORQ9BHVsG922icSD45oHa/NDZ9vnA==
   dependencies:
     "@types/node-fetch" "^2.5.10"
     node-fetch "^2.6.1"
