@@ -212,6 +212,17 @@ const RenderPost = ({ post, blocks = [], tags = [], redirect }) => {
                 </components.Code>
               )
               break
+            case 'quote':
+              toRender.push(
+                React.createElement(
+                  components.blockquote,
+                  { key: block.Id },
+                  block.Quote.Text.map(
+                    (richText) => richText.Text.Content
+                  ).join('')
+                )
+              )
+              break
             default:
               if (
                 process.env.NODE_ENV !== 'production' &&
