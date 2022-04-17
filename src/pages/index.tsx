@@ -46,6 +46,12 @@ export default function Index() {
             <a href="https://connpass.com/user/obregonia1/">connpass</a>
           </li>
           <li>
+            <a href="https://atcoder.jp/users/obregonia1/">AtCoder</a>
+          </li>
+          <li>
+            <a href="https://www.last.fm/ja/user/obregonia1">Last.fm</a>
+          </li>
+          <li>
             <a href="https://zenn.dev/obregonia1/">Zenn</a>
           </li>
         </ul>
