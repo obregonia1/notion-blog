@@ -89,7 +89,7 @@ interface Code {
   Language: string
 }
 
-export async function getPosts(pageSize: number = 10, cursor?: string) {
+export async function getPosts(pageSize: number = 20, cursor?: string) {
   let params = {
     database_id: DATABASE_ID,
     filter: {
