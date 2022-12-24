@@ -46,6 +46,9 @@ export default function Index() {
             <a href="https://connpass.com/user/obregonia1/">connpass</a>
           </li>
           <li>
+            <a href="https://www.mixcloud.com/DJ_OB_ONE/">Mixcloud</a>
+          </li>
+          <li>
             <a href="https://atcoder.jp/users/obregonia1/">AtCoder</a>
           </li>
           <li>
